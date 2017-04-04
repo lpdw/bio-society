@@ -1,0 +1,38 @@
+<% include partials/header %>
+<form action="/buy" method="post">
+	<table class="table">
+	    <tr>
+	        <th>Nom</th>
+	        <th>Type</th>
+	        <th>Quantité</th>
+	        <th>Prix</th>
+	        <th>Ajouter</th>
+	    </tr>
+	    <% for(var i=0; i<products.length; i++) { %>
+	    <tr>
+	        <td><%= products[i].name %></td>
+	        <td><%= products[i].type %></td>
+	        <td><%= products[i].quantity %></td>
+	        <td><%= products[i].price %></td>
+	        <td>
+		        <div class="input-group">
+		          	<span class="input-group-btn">
+		              	<button type="button" class="btn btn-default btn-number" disabled="disabled" data-type="minus" data-field="<%=products[i].id%>">
+		                  	<span class="glyphicon glyphicon-minus"></span>
+		              	</button>
+		          	</span>
+		          	<input type="text" name="<%=products[i].id%>" class="form-control input-number" value="0" min="0" max="<%= products[i].quantity %>">
+		          	<span class="input-group-btn">
+		              	<button type="button" class="btn btn-default btn-number" data-type="plus" data-field="<%=products[i].id%>">
+		                  	<span class="glyphicon glyphicon-plus"></span>
+		              	</button>
+		          </span>
+		      	</div>
+		    </td>
+	    </tr>
+	    <% } %>
+	</table>
+	<input type="submit" class="btn btn-primary" value="Submit">
+</form>
+<script src="/javascript/minus_plus.js"></script>
+<% include partials/footer %>

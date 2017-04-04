@@ -1,0 +1,15 @@
+[{
+	"id" : 1,
+	"quantity" : 10,
+	"name" : "tomate",
+	"type" : "fruit",
+	"price" : 1.99
+	
+},
+{
+	"id" : 2,
+	"quantity" : 10,
+	"name" : "poulet",
+	"type" : "viande",
+	"price" : 3.4	
+}]
