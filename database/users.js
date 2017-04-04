@@ -5,13 +5,29 @@ module.exports = (sequelize, DataTypes) => {
            type: DataTypes.STRING,
            validate: {notEmpty: {msg: "-> Missing username"}}
         },
+        firstname: {
+           type: DataTypes.STRING,
+           validate: {notEmpty: {msg: "-> Missing firstname"}}
+        },
+        lastname: {
+           type: DataTypes.STRING,
+           validate: {notEmpty: {msg: "-> Missing lastname"}}
+        },
         password: {
            type: DataTypes.STRING,
            validate: {notEmpty: {msg: "-> Missing password"}}
         },
-        displayName: {
+        address: {
            type: DataTypes.STRING,
-           validate: {notEmpty: {msg: "-> Missing displayName"}}
-		} 
-	});
+           validate: {notEmpty: {msg: "-> Missing address"}}
+        },
+        postcode: {
+           type: DataTypes.INTEGER,
+           validate: {notEmpty: {msg: "-> Missing postcode"}}
+        },
+        phone_number: {
+           type: DataTypes.INTEGER,
+           validate: {notEmpty: {msg: "-> Missing phone number"}}
+        }
+   });
 };
