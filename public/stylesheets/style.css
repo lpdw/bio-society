@@ -1,8 +1,108 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: "Futura";
 }
 
 a {
   color: #00B7FF;
+}
+
+.bgBody {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('http://img15.hostingpics.net/pics/52345543bg.jpg') center center no-repeat;
+    background-size: cover;
+    z-index: 1;
+}
+
+/** helpers **/
+
+.displayBlock {
+    display: block;
+}
+
+.mRight10 {
+    margin-right: 10px;
+}
+
+.btn_send {
+    border: 1px solid #009A31;
+    background: inherit;
+    color: #EFEFEF;
+    padding: 5px 10px;
+    font-size: 17px;
+}
+
+.btn_send:hover {
+    background: #009A31;
+}
+
+
+
+
+.form {
+    z-index: 2;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    background: rgba(0,0,0, .7);
+    max-width: 95%;
+    padding: 30px 0;
+}
+
+.form h1 {
+    margin: 0;
+    color: #EFEFEF;
+    font-variant: small-caps;
+}
+
+textarea:focus, input:focus{
+    outline: none;
+}
+
+input.w500 {
+    width: 480px;
+    max-width: 90%;
+    padding: 10px 0;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    border: 0;
+    border-bottom: 1px solid #009A31;
+    transition: .5s;
+    background: none;
+    color: #EFEFEF;
+}
+
+input.w500:focus {
+    width: 500px;
+    transition: .5s;
+}
+
+.navbar {
+    z-index: 2;
+    border: 0;
+    border-radius: 0;
+    background-color: #009A31;
+    border-bottom: 1px solid #232323;
+}
+
+.navbar-brand {
+    font-size: 20px;
+    color: #EFEFEF !important;
+    position: relative;
+}
+
+.navbar-brand:hover:before {
+    content: "";
+    position: absolute;
+    width: 80%;
+    top: 0;
+    height: 5px;
+    background-color: #EFEFEF;
+    left: 50%;
+    transform: translateX(-50%);
 }

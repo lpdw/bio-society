@@ -1,54 +1,32 @@
 <% include partials/header %>
-<%if (err) {%>
-    <div style="color:red"><%=err%></div>
-<%} %>
-<form class="form-horizontal" action="/signup" method="post">
-    <div class="form-group">
-        <label class="col-sm-2 control-label">Username:</label>
-        <div class="col-sm-10">
-            <input type="text" name="username"/>
+
+
+<div class="bgBody">
+    <form class="form-horizontal" action="/signup" method="post">
+
+        <div class="form text-center">
+            <h1>Inscription</h1>
+            <%if (err) {%>
+                <div class="text-center" style="color:red"><%=err%></div>
+            <%} %>
+            <input class="w500 displayBlock" placeholder="Identifiant" type="text" name="username"/>
+
+            <input class="w500 displayBlock" placeholder="Prénom" type="text" name="firstname"/>
+
+            <input class="w500 displayBlock" placeholder="Nom" type="text" name="lastname"/>
+
+            <input class="w500 displayBlock" placeholder="Adresse" type="text" name="address"/>
+
+            <input class="w500 displayBlock" placeholder="Code postal" type="text" name="postcode"/>
+
+            <input class="w500 displayBlock" placeholder="Téléphone" type="text" name="phone_number"/>
+
+            <input class="w500 displayBlock" placeholder="Mot de passe" type="password" name="password"/>
+
+            <button type="submit" class="btn_send">S’inscrire</button>
         </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label">Firstname:</label>
-        <div class="col-sm-10">
-            <input type="text" name="firstname"/>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label">Lastname:</label>
-        <div class="col-sm-10">
-            <input type="text" name="lastname"/>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label">Address:</label>
-        <div class="col-sm-10">
-            <input type="text" name="address"/>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label">Postcode:</label>
-        <div class="col-sm-10">
-            <input type="text" name="postcode"/>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label">Phone Number:</label>
-        <div class="col-sm-10">
-            <input type="text" name="phone_number"/>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label">Password:</label>
-        <div class="col-sm-10">
-            <input type="password" name="password"/>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-default">S’inscrire</button>
-        </div>
-    </div>
-</form>
+
+    </form>
+</div>
+
 <% include partials/footer %>
