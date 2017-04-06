@@ -1,0 +1,73 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Bio Society App
+host: bio-society.herokuapp.com
+# basePath prefixes all resource paths
+basePath: /
+#
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - text/html
+  - application/json
+paths:
+  /products:
+    get:
+      summary: All stored products
+      description: |
+        The Products endpoint returns all the products stored in the database.
+      tags:
+        - Products
+
+      parameters:
+      - name: "authorization"
+        in: "header"
+        description: "Token for authorization"
+        required: false
+        type: string
+      responses:
+        200:
+          description: An array of products
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Products'
+        406:
+          description: Accept Header should be application/json or text/html
+          schema:
+            $ref: '#/definitions/Error'
+
+  /swagger:
+    x-swagger-pipe: swagger_raw
+# complex objects have schema definitions
+definitions:
+  Products:
+    type: object
+    properties:
+      id:
+        type: number
+        description: Id given by the database
+      name:
+        type: string
+      quantity:
+        type: number
+      price:
+        type: number
+      type:
+        type: string
+      createdAt:
+        type: string
+        format: date
+      updatedAt:
+        type: string
+
+        format: date
+  Error:
+    type: string
