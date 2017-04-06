@@ -1,4 +1,5 @@
 <% include partials/header %>
+<% if (products.length) { %>
 <form action="/buy" method="post">
 	<table class="table">
 	    <tr>
@@ -34,5 +35,8 @@
 	</table>
 	<input type="submit" class="btn btn-primary" value="Submit">
 </form>
+<% } else {%>
+<p>Je suis vide</p>
+<% } %>
 <script src="/javascript/minus_plus.js"></script>
 <% include partials/footer %>

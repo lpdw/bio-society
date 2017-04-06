@@ -12,7 +12,8 @@ router.get('/products', function(req, res, next) {
 	var options = {
 	  uri: 'https://senorpapa.herokuapp.com/products',
 	  method: 'GET',
-	  json:true
+	  json:true,
+	  headers: {'authorization': 'lpdw-2016'}
 	};
 	// On récupère tout les produits du producteur
 	request(options, function(error, response, body){
@@ -27,7 +28,8 @@ router.get('/products/:type', function(req, res, next) {
 	var options = {
 	  uri: `https://senorpapa.herokuapp.com/products/type/${req.params.type}`,
 	  method: 'GET',
-	  json:true
+	  json:true,
+	  headers: {'authorization': 'lpdw-2016'}
 	};
 	// On récupère tout les produits du producteur
 	request(options, function(error, response, body){
@@ -37,10 +39,6 @@ router.get('/products/:type', function(req, res, next) {
 });
 
 router.post('/buy', function (req,res,next) {
-	var options = {
-	  method: 'GET',
-	  json:true
-	};
 	// Panier to send
 	let result = {id_commande:"",data:[]};
 	// construct data 
@@ -50,7 +48,8 @@ router.post('/buy', function (req,res,next) {
 				url: `https://senorpapa.herokuapp.com/products/${i}`,
 				method: 'GET',
 				headers: {
-					'Accept': 'application/json'
+					'Accept': 'application/json',
+					'authorization': 'lpdw-2016'
 				}
 			}, (error, response, body) => {
 				if (error) {
