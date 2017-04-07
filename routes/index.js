@@ -18,7 +18,7 @@ router.get('/products', function(req, res, next) {
 	// On récupère tout les produits du producteur
 	request(options, function(error, response, body){
 	    if(error) console.log(error);
-	    else return res.render('products',{products: body}); 
+	    else return res.render('products',{products: body});
 	});
 });
 
@@ -34,14 +34,14 @@ router.get('/products/:type', function(req, res, next) {
 	// On récupère tout les produits du producteur
 	request(options, function(error, response, body){
 	    if(error) console.log(error);
-	    else return res.render('products',{products: body}); 
+	    else return res.render('products',{products: body});
 	});
 });
 
 router.post('/buy', function (req,res,next) {
 	// Panier to send
 	let result = {id_commande:"",data:[]};
-	// construct data 
+	// construct data
 	for(var i in req.body){
 		let p = new Promise((resolve, reject) => {
 			request({
@@ -72,7 +72,7 @@ router.post('/buy', function (req,res,next) {
 			}
 	    }).catch(
 	      // Promesse rejetée
-	      function() { 
+	      function() {
 	        console.log("promesse rompue");
 	    });
 	}

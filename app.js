@@ -64,14 +64,14 @@ app.use(passport.session());
 
 const verifyAuth = (req, res, next) => {
    res.locals.userLogged = false;
-   if (req.originalUrl === '/signup' || req.originalUrl === '/login') {
-       return next();
-   }
-   if (req.get('authorization') === 'lpdw-2016') {
+   if (req.isAuthenticated()) {
        res.locals.userLogged = true;
        return next();
    }
-   if (req.isAuthenticated()) {
+   if (req.originalUrl === '/signup' || req.originalUrl === '/login' || req.originalUrl === '/' || req.originalUrl === '/products') {
+       return next();
+   }
+   if (req.get('authorization') === 'lpdw-2016') {
        res.locals.userLogged = true;
        return next();
    }
