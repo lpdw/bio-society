@@ -40,6 +40,8 @@ router.get('/products/:type', function(req, res, next) {
 
 
 router.post('/buy', function (req,res,next) {
+	//Clear panier
+	let panier = {id_commande:"",data:[],total:0,id_suivi:""};
 	// construct data
 	panier.id_commande = Math.random().toString(36).substr(2, 15).toUpperCase();
 	for(var i in req.body){
