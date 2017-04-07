@@ -68,7 +68,7 @@ router.post('/buy', function (req,res,next) {
 			if(result.data.length == Object.keys(req.body).length){
 				//Send data to products
 				console.log(result);
-				res.send("Panier validé");
+				res.render('panier',{products: req.body});
 			}
 	    }).catch(
 	      // Promesse rejetée
@@ -78,5 +78,36 @@ router.post('/buy', function (req,res,next) {
 	}
 });
 
+//Envoie de données vers la banque
+router.post('/panier', function(req, res, next) {
+	// On défini l'accès de la request	
+	var options = {
+	  uri: 'https://senorpapa.herokuapp.com/products/',
+	  json:true,
+	  headers: {
+	  	'Accept': 'application/json'
+	  }
+	};
+
+	//Création de l'id de transaction
+	console.log('-------------RANDOM-------------');
+    var randomNum = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for( var i=0; i < 5; i++ )
+        randomNum += possible.charAt(Math.floor(Math.random() * possible.length));
+
+	request.post(options, function(error, response, body){
+		console.log('---------Panier---------');
+		let jsonData = req.body;
+		jsonData["bioSocietyAcount"] = "010203040506";
+		jsonData["type"] = "payement";
+		jsonData["amount"] = "19,99";
+		jsonData["transactionId"] = randomNum;
+		console.log(jsonData);
+		//let test = JSON.stringify(req.body);		
+	    if(error) console.log(error);
+	    else return res.render('index',{products: body}); 
+	});
+});
 
 module.exports = router;

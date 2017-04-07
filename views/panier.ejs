@@ -1,0 +1,94 @@
+<% include partials/header %>
+<style type="text/css">
+	h1 { text-align: center; }
+	.panel-title {display: inline;font-weight: bold;}
+	.checkbox.pull-right { margin: 0; }
+	.pl-ziro { padding-left: 0px; }
+	.container { padding-top: 20px; }
+</style>
+<h1>Votre panier</h1>
+
+<!-- <%= products[0] %> -->
+
+<table class="table">
+	<thead>
+		<tr><th>Article</th><th>Prix</th><th>Quantité</th></tr>
+	</thead>
+	<tbody>
+	</tbody>
+</table>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-offset-4 col-xs-12 col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        Paiement
+                    </h3>                    
+                </div>
+                <div class="panel-body">
+                    <form action="/panier" method="post">
+                    	<div class="form-group">
+	                        <label for="cardNumber">
+	                            Clé de sécurité</label>
+	                        <a href="#" data-toggle="tooltip" title="Code obtenu sur votre compte E-corp"><span class="glyphicon glyphicon-question-sign"></span></a>
+	                        <div class="input-group">
+	                            <input type="text" name="token" class="form-control" placeholder="Clé de sécurité valide"
+	                                required autofocus />
+	                            <span class="input-group-addon"><i class="fa fa-key" aria-hidden="true"></i></span>
+	                        </div>
+	                    </div>
+	                    <div class="form-group">
+	                        <label for="cardNumber">
+	                            Numéro de carte bancaire</label>
+	                        <div class="input-group">
+	                            <input type="text" name="cardNumber" class="form-control" placeholder="Numéro de carte valide" pattern="[0-9]{16}" maxlength="16" title="16 numéro uniquement"
+	                                required autofocus />
+	                            <span class="input-group-addon"><i class="fa fa-lock" aria-hidden="true"></i></span>
+	                        </div>
+	                    </div>
+	                    <div class="row">
+	                        <div class="col-xs-7 col-md-7">
+	                            <div class="form-group">
+	                                <label for="expityMonth">
+	                                    Date d'expiration</label>
+	                                <div class="col-xs-6 col-lg-6 pl-ziro">
+	                                    <input type="text" name="expityMonth" class="form-control" placeholder="MM" pattern="(([1][0-2])|[1-9])" maxlength="2" required />
+	                                </div>
+	                                <div class="col-xs-6 col-lg-6 pl-ziro">
+	                                    <input type="text" name="expityYear" class="form-control" placeholder="AA" pattern="(([0-9][0-9])|[0-9])" maxlength="2" required /></div>
+	                            </div>
+	                        </div>
+	                        <div class="col-xs-5 col-md-5 pull-right">
+	                            <div class="form-group">
+	                                <label for="cvcCode">
+	                                    CVC</label> 
+	                                    <a href="#" data-toggle="tooltip" title="Codes à trois chiffres au dos des cartes de crédit"><span class="glyphicon glyphicon-question-sign"></span></a>
+	                                <input type="password" name="cvcCode" class="form-control"  placeholder="ex: 123" maxlength="3" required />
+	                            </div>
+	                        </div>
+	                    </div>
+	                    <div class="col-xs-12 col-md-12">                            
+                            <input type="submit" class="btn btn-success btn-block" value="Valider">                            
+	                    </div>	                    
+                    </form>
+                </div>
+            </div>
+            <ul class="nav nav-pills nav-stacked">
+                <li class="active"><a href="#"><span class="badge pull-right">500 <span class="glyphicon glyphicon-euro"></span></span> Total</a>
+                </li>
+            </ul>
+            <br/>
+            
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();   
+});
+</script>
+
+<% include partials/footer %>
