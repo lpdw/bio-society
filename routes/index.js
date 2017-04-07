@@ -1,3 +1,4 @@
+'use strict'
 var router = require('express').Router();
 const IndexService = require('../services/index');
 var request = require('request');
