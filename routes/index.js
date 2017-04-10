@@ -1,6 +1,7 @@
 'use strict'
 var router = require('express').Router();
 const IndexService = require('../services/index');
+const OrderService = require('../services/orders');
 var request = require('request');
 let panier = {id_commande:"",data:[],total:0,id_suivi:""}
 router.get('/',function(req,res,next){
@@ -10,6 +11,7 @@ router.get('/',function(req,res,next){
 // Affiche tout les produits
 router.get('/products', function(req, res, next) {
 	// On défini l'accès de la request
+	
 	var options = {
 	  uri: 'https://senorpapa.herokuapp.com/products',
 	  method: 'GET',
@@ -42,6 +44,7 @@ router.get('/products/:type', function(req, res, next) {
 
 router.post('/buy', function (req,res,next) {
 	//Clear panier
+	let commande = OrderService.create({});
 	let panier = {id_commande:"",data:[],total:0,id_suivi:""};
 	// construct data
 	panier.id_commande = Math.random().toString(36).substr(2, 15).toUpperCase();
@@ -74,9 +77,13 @@ router.post('/buy', function (req,res,next) {
 	    function(val) {
 	      	panier.data.push(val);
 	      	panier.total =  + Number((parseInt(val.quantity) * val.price)+panier.total).toFixed(2);
+			
+			commande.userId = req.user.id;
+			commande.data = JSON.stringify(panier.data);
+			
 			if(panier.data.length == Object.keys(req.body).length){
 				//Send data to products
-				console.log(panier);
+				//console.log(panier);
 				res.render('panier',{products: panier});
 			}
 	    }).catch(
@@ -140,6 +147,14 @@ router.post('/panier', function(req, res, next) {
 	    if(error) console.log(error);
 	    else return res.render('index',{products: body}); 
 	});
+});
+
+router.get('/orders', function(req, res, next){
+	OrderService.findByQuery({userId : req.user.id})
+		.then(orders => {
+			res.render('orders', {orders: orders});
+		})
+	;
 });
 
 module.exports = router;
