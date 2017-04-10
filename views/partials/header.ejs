@@ -24,9 +24,9 @@
       </ul> -->
       <ul class="nav navbar-nav navbar-right">
           <% if (userLogged) { %>
-              <li><a class="navbar-brand" href="/products">Products</a></li>
               <li><a class="navbar-brand" href="/logout"><span class="mRight10 glyphicon glyphicon-log-in"></span>Se déconnecter</a></li>
           <% } else { %>
+              <li><a class="navbar-brand" href="/products">Products</a></li>
               <li><a class="navbar-brand" href="/signup"><span class="mRight10 glyphicon glyphicon-user"></span>S'enregistrer</a></li>
               <li><a class="navbar-brand" href="/login"><span class="mRight10 glyphicon glyphicon-log-in"></span>Connexion</a></li>
           <% } %>
