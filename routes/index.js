@@ -95,7 +95,7 @@ router.post('/buy', function (req,res,next) {
 	    }).catch(
 	      // Promesse rejetée
 	      function() {
-	        console.log("promesse rompue2");
+	        console.log("promesse rompue");
 	    });
 	}
 });
@@ -103,7 +103,7 @@ router.post('/buy', function (req,res,next) {
 //Envoie de données vers la banque
 router.post('/panier', function(req, res, next) {
 
-  	let jsonData = {"type":2,"payer":req.body.cardNumber,"status":1,"amount":req.session.panier.total,"message":"Merci Jacquie et Michel !","beneficiary":"010203040506","token":req.body.token};
+  	let jsonData = {"type":2,"payer":req.body.cardNumber,"status":1,"amount":req.session.panier.total,"message":"Paiement de votre commande sur Bio Society","beneficiary":"bAZBtCNvP2pUOsya","token":req.body.token};
 
 	let transaction = Transaction.doTransaction(jsonData);
 	// Succès, l'argent est bloqué sur le compte de l'acheteur.
@@ -155,6 +155,7 @@ router.post('/panier', function(req, res, next) {
 	    });
 	   // L'acheteur n'a pas assez d'argent.
 	}).catch(function(err) {
+		console.log(err);
 		res.send("Transaction annulée, fond insuffisant");
 	});
 

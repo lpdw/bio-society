@@ -69,7 +69,7 @@ const verifyAuth = (req, res, next) => {
        res.locals.userLogged = true;
        return next();
    }
-   if (req.originalUrl === '/signup' || req.originalUrl === '/login' || req.originalUrl === '/' || req.originalUrl === '/products' || req.originalUrl === '/notify/colis' || req.originalUrl === '/notify/test') {
+   if (req.originalUrl === '/signup' || req.originalUrl === '/login' || req.originalUrl === '/' || req.originalUrl === '/products' || req.originalUrl === '/notify/colis') {
        return next();
    }
    if (req.get('authorization') === 'lpdw-2016') {

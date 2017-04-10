@@ -38,7 +38,7 @@ router.post('/colis', function(req, res, next) {
 			let delivered = (req.body.delivered === 'true' || req.body.delivered === true);
 
 			if (delivered) {
-				let jsonData = {"type":2,"payer":"010203040506","status":1,"amount":amount,"message":"Merci Jacquie et Michel !","beneficiary":"342434214242","token":"djeixhfqxdsqdqcgf"};
+				let jsonData = {"type":2,"payer":"bAZBtCNvP2pUOsya","status":1,"amount":amount,"message":"Paiement d'une commande passée sur le site Bio Society","beneficiary":"99niWuTpyFz6Mi3m","token":"Rhv2Y8IHtNA"};
 				let transaction = Transaction.doTransaction({transaction_id:67});
 				transaction.then(function(transaction_id) {
 					let confirmTransaction = Transaction.confirmTransaction(transaction_id, {status: 2});
@@ -51,7 +51,7 @@ router.post('/colis', function(req, res, next) {
 					return res.status(502).send({err: 'An error occurred, the transaction with the bank did not proceed correctly.', bankErr: error});
 				});
 			} else {
-				let jsonData = {"type":3,"payer":"010203040506","status":1,"amount":amount,"message":"Merci Jacquie et Michel !","beneficiary":orders[0].carte_bleue,"token":"hdzfdfchrofgbhcsxq"};
+				let jsonData = {"type":3,"payer":"bAZBtCNvP2pUOsya","status":1,"amount":amount,"message":"Remboursement de votre commande sur Bio Society suite à un problème de livraison.","beneficiary":orders[0].carte_bleue,"token":"Rhv2Y8IHtNA"};
 				let transaction = Transaction.doTransaction({transaction_id:67});
 				transaction.then(function(transaction_id) {
 					let confirmTransaction = Transaction.confirmTransaction(transaction_id, {status: 2});
@@ -69,27 +69,6 @@ router.post('/colis', function(req, res, next) {
 		return res.status(500).send({err: error});
 	});
 
-});
-
-router.put('/test', function(req, res, next) {
-	if (!req.is('json')) {
-		return res.status(406).send({err: 'Not valid type for asked resource'});
-	}
-
-	console.log(req.body);
-
-	return res.status(200).send({msg: "Success"});
-});
-
-router.post('/test', function(req, res, next) {
-	if (!req.is('json')) {
-		return res.status(406).send({err: 'Not valid type for asked resource'});
-	}
-
-	console.log(req.body);
-
-	return res.status(200).send({status:1, transaction_id:67});
-	//return res.status(403).send({err: "No money !"});
 });
 
 module.exports = router;

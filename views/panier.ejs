@@ -26,8 +26,7 @@
 	                            Clé de sécurité</label>
 	                        <a href="#" data-toggle="tooltip" title="Code obtenu sur votre compte E-corp"><span class="glyphicon glyphicon-question-sign"></span></a>
 	                        <div class="input-group">
-	                            <input type="text" name="token" class="form-control" placeholder="Clé de sécurité valide"
-	                                required autofocus />
+	                            <input type="text" name="token" class="form-control" placeholder="Clé de sécurité valide" pattern="[a-Z0-9]{11}" maxlength="11" title="11 caractères uniquement" required autofocus />
 	                            <span class="input-group-addon"><i class="fa fa-key" aria-hidden="true"></i></span>
 	                        </div>
 	                    </div>
@@ -35,7 +34,7 @@
 	                        <label for="cardNumber">
 	                            Numéro de carte bancaire</label>
 	                        <div class="input-group">
-	                            <input type="text" name="cardNumber" class="form-control" placeholder="Numéro de carte valide" pattern="[0-9]{16}" maxlength="16" title="16 numéro uniquement"
+	                            <input type="text" name="cardNumber" class="form-control" placeholder="Numéro de carte valide" pattern="[a-Z0-9]{16}" maxlength="16" title="16 caractères uniquement"
 	                                required autofocus />
 	                            <span class="input-group-addon"><i class="fa fa-lock" aria-hidden="true"></i></span>
 	                        </div>
