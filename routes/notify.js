@@ -12,12 +12,12 @@ router.post('/colis', function(req, res, next) {
 	let valid = true;
 	let error = "";
 
-	if (!req.body.tracking) {
+	if (req.body.tracking === undefined) {
 		valid = false;
 		error = 'Can\'t find tracking data. ';
 	}
 
-	if (!req.body.delivered) {
+	if (req.body.delivered === undefined) {
 		valid = false;
 		error += 'Can\'t find \'delivered\' data.';
 	}
@@ -51,7 +51,7 @@ router.post('/colis', function(req, res, next) {
 					return res.status(500).send({err: 'An error occurred, the transaction with the bank did not proceed correctly.', bankErr: error});
 				});
 			} else {
-				let jsonData = {"type":3,"payer":"010203040506","status":1,"amount":amount,"message":"Merci Jacquie et Michel !","beneficiary":"889324421323","token":"hdzfdfchrofgbhcsxq"};
+				let jsonData = {"type":3,"payer":"010203040506","status":1,"amount":amount,"message":"Merci Jacquie et Michel !","beneficiary":orders[0].carte_bleue,"token":"hdzfdfchrofgbhcsxq"};
 				let transaction = Transaction.doTransaction({transaction_id:67});
 				transaction.then(function(transaction_id) {
 					let confirmTransaction = Transaction.confirmTransaction(transaction_id, {status: 2});
