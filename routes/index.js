@@ -117,6 +117,7 @@ const verifProduct = (data) =>{
 	// TO DO send data to products and return response
 	return true;
 }
+
 //Envoie de données vers la banque
 router.post('/panier', function(req, res, next) {
 	// On défini l'accès de la request	
