@@ -7,6 +7,12 @@ exports.findByQuery = query => {
     });
 };
 
+exports.findOneByQuery = query => {
+    return db.Orders.findOne({
+       where: query
+    });
+};
+
 exports.create = (order) => {
 	const model = db.Orders.build(order);
 	return model.validate()

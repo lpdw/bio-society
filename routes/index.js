@@ -84,7 +84,7 @@ router.post('/buy', function (req,res,next) {
 		p.then(function(val) {
 	      	panier.data.push(val);
 	      	panier.total =  + Number((parseInt(val.quantity) * val.price)+panier.total).toFixed(2);
-
+			
 			if(panier.data.length == Object.keys(req.body).length){
 				let data = {data : JSON.stringify(panier.data), total: panier.total};
 		        OrderService.updateById(id, data);
