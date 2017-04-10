@@ -43,7 +43,7 @@ router.get('/products/:type', function(req, res, next) {
 
 router.post('/buy', function (req,res,next) {
 	//Clear panier
-	let commande;// = OrderService.create({});
+	// let commande;// = OrderService.create({});
 	let panier = {"id_commande":"","data":[],"total":0,"id_suivi":"","nom":req.user.lastname,"prenom":req.user.firstname,"address":req.user.address,"cp":req.user.postcode,"phone":req.user.phone_number};
 	// construct data
 	panier.id_commande = Math.random().toString(36).substr(2, 15).toUpperCase();
@@ -76,8 +76,8 @@ router.post('/buy', function (req,res,next) {
 	      	panier.data.push(val);
 	      	panier.total =  + Number((parseInt(val.quantity) * val.price)+panier.total).toFixed(2);
 			
-			commande.userId = req.user.id;
-			commande.data = JSON.stringify(panier.data);
+			// commande.userId = req.user.id;
+			// commande.data = JSON.stringify(panier.data);
 			
 			if(panier.data.length == Object.keys(req.body).length){
 				//Send data to products
@@ -87,7 +87,7 @@ router.post('/buy', function (req,res,next) {
 	    }).catch(
 	      // Promesse rejetée
 	      function() {
-	        console.log("promesse rompue");
+	        console.log("promesse rompue2");
 	    });
 	}
 });
@@ -121,7 +121,6 @@ router.post('/panier', function(req, res, next) {
 		
 		// On envoie la commande au producteur.
 		p.then(function(id_suivi) {
-	      	console.log("Show val : ",id_suivi);
 	      	req.session.panier.id_suivi = id_suivi;
 	      	let comfirmTransaction = Transaction.confirmTransaction(transaction_id, {status: 2});
 	      	comfirmTransaction.then(function(val) {
