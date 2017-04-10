@@ -13,6 +13,9 @@ module.exports = (sequelize, DataTypes) => {
 		statut:{
 			type: DataTypes.STRING
 		},
+		carte_bleue:{
+			type: DataTypes.INTEGER
+		},
         id_suivi:{
             type: DataTypes.STRING
         }
