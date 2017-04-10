@@ -135,7 +135,7 @@ router.post('/panier', function(req, res, next) {
 		let transaction = Transaction.doTransaction(jsonData);
 		transaction.then(function(transaction_id) {
 			// Succès, l'argent est bloqué sur le compte de l'acheteur.
-
+			
 			// On envoie la commande au producteur.
 			p.then(function(id_suivi) {
 		      	console.log("Show val : ",id_suivi);
