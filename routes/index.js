@@ -135,10 +135,10 @@ router.post('/panier', function(req, res, next) {
 	      	comfirmTransaction.then(function(val) {
 	      		// succès, la commande est passée et l'argent a été débité.
 				OrderService.updateById(req.session.panier.id_commande, {statut : "acceptée"});
-	      		res.send("Félicitation, la commande est passée et l'argent a été débité");
+				res.render('validate', {validate: "Félicitation, la commande est passée et l'argent a été débité"});
 	      	}).catch(function(err) {
 				// La commande est passée mais le virement a échoué.
-				res.send("Dommage, la commande est passée mais le virement a échoué");
+				res.render('validate', {validate: "Attention, la commande est passée avec succès mais le virement n'a pas pu être effectué. Vous serez recontacté dans les plus brefs délais pour valider la transaction."});
 	      	});
 	    // Le producteur n'a pas pu honoré sa commande.
 	    }).catch(function() {
@@ -146,17 +146,17 @@ router.post('/panier', function(req, res, next) {
 	        // Succès, l'argent a bien été rendu à l'acheteur.
 	        comfirmTransaction.then(function(val) {
 				OrderService.updateById(req.session.panier.id_commande, {statut : "remboursée"});
-	        	res.send("Félicitation, l'argent vous a bien été rendu");
+	        	res.render('validate', {validate: "Les produits demandés ne sont plus disponibles, l'argent n'a pas été débité de votre compte."});
 	      	// La commande n'est pas passée et le remboursement de l'acheteur a échoué.
 	      	}).catch(function(err) {
-	      		res.send("Attention, votre commande n'est pas passée et le remboursement de l'acheteur n'a pas pu aboutir !");
+	      		res.render('validate', {validate: "Attention, votre commande n'est pas passée et le remboursement de l'acheteur n'a pas pu aboutir ! Veuillez contacter votre banque pour débloquer le montant de la transaction."});
 	      	});
 	        console.log("promesse rompue");
 	    });
-	   // L'acheteur n'a pas assez d'argent.
+	   // Les informations saisies sont invalides ou bien l'acheteur n'a pas assez d'argent.
 	}).catch(function(err) {
 		OrderService.updateById(req.session.panier.id_commande, {statut : "annulée"});
-		res.send("Transaction annulée, fond insuffisant");
+		res.render('validate', {validate: "La transaction n'a pas eu lieu, les données saisies sont invalides ou bien le fond disponible est insuffisant"});
 	});
 
 });
@@ -168,5 +168,7 @@ router.get('/orders', function(req, res, next){
 		})
 	;
 });
+
+router.get('/validate', function(req, res, next){});
 
 module.exports = router;
