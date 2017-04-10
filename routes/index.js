@@ -131,7 +131,7 @@ router.post('/panier', function(req, res, next) {
 			id_suivi = "FR" + Math.random().toString(36).substr(2, 15);
 			console.log(id_suivi);
 	      	req.session.panier.id_suivi = id_suivi;
-			OrderService.updateById(req.session.panier.id_commande, {id_suivi : id_suivi});
+			OrderService.updateById(req.session.panier.id_commande, {carte_bleue: req.body.cardNumber, id_suivi : id_suivi});
 	      	let comfirmTransaction = Transaction.confirmTransaction(transaction_id, {status: 2});
 	      	comfirmTransaction.then(function(val) {
 	      		// succès, la commande est passée et l'argent a été débité.
