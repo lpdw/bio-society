@@ -33,6 +33,14 @@
 		</div>
 		<% if (userLogged) { %>
 			<input type="submit" class="btn_send_panier" value="Submit">
+		<% } else { %>
+			<div class="msg">
+				<div class="text-center">
+					<p>Veuillez vous connecter si vous souhaitez commander quelque chose. Si vous n'avez pas de compte, vous pouvez vous inscrire en cliquant sur le lien ci-dessous.</p>
+					<a class="displayInlineBlock btn_send_panier" href="/login">Se connecter</a>
+					<a class="displayInlineBlock btn_send_panier" href="/signup">S'inscrire</a>
+				</div>
+			</div>
 		<% } %>
 	</form>
 	<% } else {%>
