@@ -86,7 +86,7 @@ router.post('/buy', function (req,res,next) {
 	      	panier.total =  + Number((parseInt(val.quantity) * val.price)+panier.total).toFixed(2);
 			
 			if(panier.data.length == Object.keys(req.body).length){
-				let data = {data : JSON.stringify(panier.data), total: panier.total};
+				let data = {data : JSON.stringify(panier.data), total: panier.total, statut: "non finalisée"};
 		        OrderService.updateById(id, data);
 				//Send data to products
 				req.session.panier = panier;
@@ -95,7 +95,8 @@ router.post('/buy', function (req,res,next) {
 	    }).catch(
 	      // Promesse rejetée
 	      function() {
-	        console.log("promesse rompue");
+			OrderService.updateById(id, {statut: "annulée"});
+			console.log("promesse rompue");
 	    });
 	}
 });
@@ -146,6 +147,7 @@ router.post('/panier', function(req, res, next) {
 	    	let comfirmTransaction = Transaction.confirmTransaction(transaction_id, {status: 0});
 	        // Succès, l'argent a bien été rendu à l'acheteur.
 	        comfirmTransaction.then(function(val) {
+				OrderService.updateById(req.session.panier.id_commande, {statut : "remboursée"});
 	        	res.send("Félicitation, l'argent vous a bien été rendu");
 	      	// La commande n'est pas passée et le remboursement de l'acheteur a échoué.
 	      	}).catch(function(err) {
@@ -155,7 +157,7 @@ router.post('/panier', function(req, res, next) {
 	    });
 	   // L'acheteur n'a pas assez d'argent.
 	}).catch(function(err) {
-		console.log(err);
+		OrderService.updateById(req.session.panier.id_commande, {statut : "annulée"});
 		res.send("Transaction annulée, fond insuffisant");
 	});
 
