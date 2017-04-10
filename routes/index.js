@@ -13,7 +13,7 @@ router.get('/products', function(req, res, next) {
 	// On défini l'accès de la request
 	
 	var options = {
-	  uri: 'https://senorpapa.herokuapp.com/products',
+	  uri: 'https://senorpaparobot.herokuapp.com/products',
 	  method: 'GET',
 	  json:true,
 	  headers: {'authorization': 'lpdw-2016'}
@@ -29,7 +29,7 @@ router.get('/products', function(req, res, next) {
 router.get('/products/:type', function(req, res, next) {
 	// On défini l'accès de la request
 	var options = {
-	  uri: `https://senorpapa.herokuapp.com/products/type/${req.params.type}`,
+	  uri: `https://senorpaparobot.herokuapp.com/products/type/${req.params.type}`,
 	  method: 'GET',
 	  json:true,
 	  headers: {'authorization': 'lpdw-2016'}
@@ -43,8 +43,8 @@ router.get('/products/:type', function(req, res, next) {
 
 router.post('/buy', function (req,res,next) {
 	//Clear panier
-	// let commande;// = OrderService.create({});
-	let panier = {"id_commande":"","data":[],"total":0,"id_suivi":"","nom":req.user.lastname,"prenom":req.user.firstname,"address":req.user.address,"cp":req.user.postcode,"phone":req.user.phone_number};
+	// let commande = OrderService.create({});
+	let panier = {"id_commande":"","data":[],"total":0,"id_suivi":"","lastname":req.user.lastname,"firstname":req.user.firstname,"address":req.user.address,"postcode":req.user.postcode,"phone_number":req.user.phone_number};
 	// construct data
 	panier.id_commande = Math.random().toString(36).substr(2, 15).toUpperCase();
 	for(var i in req.body){
@@ -55,7 +55,7 @@ router.post('/buy', function (req,res,next) {
 	for(var i in req.body){
 		let p = new Promise((resolve, reject) => {
 			request({
-				url: `https://senorpapa.herokuapp.com/products/${i}`,
+				url: `https://senorpaparobot.herokuapp.com/products/${i}`,
 				method: 'GET',
 				headers: {
 					'Accept': 'application/json',
@@ -97,7 +97,7 @@ router.post('/panier', function(req, res, next) {
 
 	let p = new Promise((resolve, reject) => {
 		request({
-		    url: `https://senorpapa.herokuapp.com/command`,
+		    url: `https://senorpaparobot.herokuapp.com/command`,
 		    method: "POST",
 		    json: true,
 		    headers: {
