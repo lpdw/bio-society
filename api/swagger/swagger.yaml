@@ -29,8 +29,8 @@ paths:
       parameters:
       - name: "authorization"
         in: "header"
-        description: "Token for authorization"
-        required: false
+        description: "lpdw-2016"
+        required: true
         type: string
       responses:
         200:
@@ -43,7 +43,59 @@ paths:
           description: Accept Header should be application/json or text/html
           schema:
             $ref: '#/definitions/Error'
-
+  /buy:
+    post:
+      summary: Send panier to products
+      description: |
+        The products update a database and return id_suivi from eatDelivery
+      parameters:
+      - name: "authorization"
+        in: "header"
+        description: "lpdw-2016"
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Panier object that needs to be added to the store
+        required: true
+        schema:
+          type: array
+          items:
+            $ref: '#/definitions/Products'
+      responses:
+        200:
+          description: OK
+        406:
+          description: Accept Header should be application/json or text/html
+          schema:
+            items:
+              $ref: '#/definitions/Error'
+  /panier:
+      post:
+        summary: Send panier to products
+        description: |
+          The products update a database and return id_suivi from eatDelivery
+        parameters:
+        - name: "authorization"
+          in: "header"
+          description: "lpdw-2016"
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Panier object that needs to be added to the store
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Products'
+        responses:
+          200:
+            description: OK
+          406:
+            description: Accept Header should be application/json or text/html
+            schema:
+              $ref: '#/definitions/Error'
   /swagger:
     x-swagger-pipe: swagger_raw
 # complex objects have schema definitions
@@ -62,12 +114,5 @@ definitions:
         type: number
       type:
         type: string
-      createdAt:
-        type: string
-        format: date
-      updatedAt:
-        type: string
-
-        format: date
   Error:
     type: string

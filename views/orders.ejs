@@ -9,14 +9,5 @@
 			<th>Total</th>
 	        <th>Détails</th>
 	    </tr>
-		<% for(var i=0; i<orders.length; i++) { %>
-	    <tr>
-	        <td><%= orders[i].id %></td>
-			<td><%= orders[i].createdAt %></td>
-	        <td><%= orders[i].statut %></td>
-	        <td><%= orders[i].total %></td>
-	        <td></td>
-	    </tr>
-	    <% } %>
 
 <% include partials/footer %>
