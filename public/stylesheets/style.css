@@ -156,3 +156,18 @@ input.w500:focus {
 .whiteColor {
     color: #EFEFEF;
 }
+
+.msg {
+    margin-top: 15px;
+    color: #EFEFEF;
+    font-size: 17px;
+}
+
+.msg a {
+    text-align: center;
+    font-size: 16px;
+}
+
+.displayInlineBlock {
+    display: inline-block;
+}
