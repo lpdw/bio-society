@@ -1,6 +1,7 @@
 'use strict'
 const express = require('express');
 const router = express.Router();
+const OrderService = require('../services/orders');
 var Transaction = require('../lib/transaction');
 
 router.post('/colis', function(req, res, next) {
@@ -10,7 +11,7 @@ router.post('/colis', function(req, res, next) {
 
 	let valid = true;
 	let error = "";
-	
+
 	if (!req.body.tracking) {
 		valid = false;
 		error = 'Can\'t find tracking data. ';
@@ -23,6 +24,15 @@ router.post('/colis', function(req, res, next) {
 
 	if (!valid)
 		return res.status(400).send({err: error});
+
+		OrderService.findByQuery({id_suivi : req.body.tracking})
+			.then(order => {
+				//console.log(order.total);
+				order.total;
+			}).catch(function(error){
+
+			})
+		;
 
 	if (req.body.delivered !== 'true' && req.body.delivered !== true && req.body.delivered != 'false' && req.body.delivered != false)
 		return res.status(400).send({err: 'Value of \'delivered\' data is not valid.'});

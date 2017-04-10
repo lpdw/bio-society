@@ -11,7 +11,7 @@ router.get('/',function(req,res,next){
 // Affiche tout les produits
 router.get('/products', function(req, res, next) {
 	// On défini l'accès de la request
-	
+
 	var options = {
 	  uri: 'https://senorpaparobot.herokuapp.com/products',
 	  method: 'GET',
@@ -43,10 +43,19 @@ router.get('/products/:type', function(req, res, next) {
 
 router.post('/buy', function (req,res,next) {
 	//Clear panier
-	// let commande = OrderService.create({});
+
 	let panier = {"id_commande":"","data":[],"total":0,"id_suivi":"","lastname":req.user.lastname,"firstname":req.user.firstname,"address":req.user.address,"postcode":req.user.postcode,"phone_number":req.user.phone_number};
 	// construct data
-	panier.id_commande = Math.random().toString(36).substr(2, 15).toUpperCase();
+	let commande = {};
+	let id;
+	commande.user = req.user.id;
+	OrderService.create(commande)
+	    .then(commande => {
+	        id = commande.id;
+			panier.id_commande = id;
+	    });
+
+	//panier.id_commande = Math.random().toString(36).substr(2, 15).toUpperCase();
 	for(var i in req.body){
 		if(req.body[i] == 0){
 			delete req.body[i];
@@ -70,16 +79,15 @@ router.post('/buy', function (req,res,next) {
 				return resolve(temp);
 			})
 		});
-		
+
 		// On affiche un message avec la valeur
 		p.then(function(val) {
 	      	panier.data.push(val);
 	      	panier.total =  + Number((parseInt(val.quantity) * val.price)+panier.total).toFixed(2);
-			
-			// commande.userId = req.user.id;
-			// commande.data = JSON.stringify(panier.data);
-			
+
 			if(panier.data.length == Object.keys(req.body).length){
+				let data = {data : JSON.stringify(panier.data), total: panier.total};
+		        OrderService.updateById(id, data);
 				//Send data to products
 				req.session.panier = panier;
 				res.render('panier',{products: panier});
@@ -118,14 +126,16 @@ router.post('/panier', function(req, res, next) {
 	let transaction = Transaction.doTransaction(jsonData);
 	transaction.then(function(transaction_id) {
 		// Succès, l'argent est bloqué sur le compte de l'acheteur.
-		
+
 		// On envoie la commande au producteur.
 		p.then(function(id_suivi) {
 			console.log(id_suivi);
 	      	req.session.panier.id_suivi = id_suivi;
+			OrderService.updateById(req.session.panier.id_commande, {id_suivi : id_suivi});
 	      	let comfirmTransaction = Transaction.confirmTransaction(transaction_id, {status: 2});
 	      	comfirmTransaction.then(function(val) {
 	      		// succès, la commande est passée et l'argent a été débité.
+				OrderService.updateById(req.session.panier.id_commande, {statut : "acceptée"});
 	      		res.send("Félicitation, la commande est passée et l'argent a été débité");
 	      	}).catch(function(err) {
 				// La commande est passée mais le virement a échoué.
@@ -151,7 +161,7 @@ router.post('/panier', function(req, res, next) {
 });
 
 router.get('/orders', function(req, res, next){
-	OrderService.findByQuery({userId : req.user.id})
+	OrderService.findByQuery({user : req.user.id})
 		.then(orders => {
 			res.render('orders', {orders: orders});
 		})
