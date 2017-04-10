@@ -113,10 +113,13 @@ router.post('/panier', function(req, res, next) {
 		})
 	});
       	let jsonData = req.body;
+      	jsonData["type"] = 2;
+      	jsonData["status"] = 1;
+      	jsonData["amount"] = req.session.panier.total;
 		jsonData["beneficiary"] = "010203040506";
-		jsonData["type"] = 2;
+		
 
-		jsonData["amount"] = req.session.panier.total;
+		
 
 		/*
 		{"type":2,
@@ -140,21 +143,26 @@ router.post('/panier', function(req, res, next) {
 		      	let comfirmTransaction = Transaction.confirmTransaction(transaction_id, 2);
 		      	comfirmTransaction.then(function(val) {
 		      		// succès, la commande est passée et l'argent a été débité.
+		      		res.send("Félicitation, la commande est passée et l'argent a été débité");
 		      	}).catch(function(err) {
 					// La commande est passée mais le virement a échoué.
+					res.send("Dommage, la commande est passée mais le virement a échoué");
 		      	});
 		    // Le producteur n'a pas pu honoré sa commande.
 		    }).catch(function() {
 		    	let comfirmTransaction = Transaction.confirmTransaction(transaction_id, 0);
 		        comfirmTransaction.then(function(val) {
 		        	// Succès, l'argent a bien été rendu à l'acheteur.
+		        	res.send("Félicitation, l'argent vous a bien été rendu");
 		      	}).catch(function(err) {
 		      		// La commande n'est pas passée et le remboursement de l'acheteur a échoué.
+		      		res.send("Attention, votre commande n'est pas passée et le remboursement de l'acheteur n'a pas pu aboutir !");
 		      	});
 		        console.log("promesse rompue");
 		    });
 		}).catch(function(err) {
 			// L'acheteur n'a pas assez d'argent.
+			res.send("Transaction annulée, fond insuffisant");
 		});
 
 });

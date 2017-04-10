@@ -31,7 +31,9 @@
 			 	<% } %>
 		   	</div>
 		</div>
-		<input type="submit" class="btn_send_panier" value="Submit">
+		<% if (userLogged) { %>
+			<input type="submit" class="btn_send_panier" value="Submit">
+		<% } %>
 	</form>
 	<% } else {%>
 		<p>Je suis vide</p>
