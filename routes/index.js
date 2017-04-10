@@ -55,7 +55,6 @@ router.post('/buy', function (req,res,next) {
 			panier.id_commande = id;
 	    });
 
-	//panier.id_commande = Math.random().toString(36).substr(2, 15).toUpperCase();
 	for(var i in req.body){
 		if(req.body[i] == 0){
 			delete req.body[i];
@@ -129,7 +128,6 @@ router.post('/panier', function(req, res, next) {
 		});
 		// La commande est passée auprès du producteur.
 		p.then(function(id_suivi) {
-			id_suivi = "FR" + Math.random().toString(36).substr(2, 15);
 			console.log(id_suivi);
 	      	req.session.panier.id_suivi = id_suivi;
 			OrderService.updateById(req.session.panier.id_commande, {carte_bleue: req.body.cardNumber, id_suivi : id_suivi});
