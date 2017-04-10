@@ -91,6 +91,7 @@ router.post('/buy', function (req,res,next) {
 	    });
 	}
 });
+
 //Envoie de données vers la banque
 router.post('/panier', function(req, res, next) {
 	// On défini l'accès de la request	

@@ -14,6 +14,7 @@ var users = require('./routes/users');
 var signup = require('./routes/signup');
 var login = require('./routes/login');
 var logout = require('./routes/logout');
+var notify = require('./routes/notify');
 
 var passport = require('passport');
 var authentication = require('./services/authentication');
@@ -68,7 +69,7 @@ const verifyAuth = (req, res, next) => {
        res.locals.userLogged = true;
        return next();
    }
-   if (req.originalUrl === '/signup' || req.originalUrl === '/login' || req.originalUrl === '/' || req.originalUrl === '/products') {
+   if (req.originalUrl === '/signup' || req.originalUrl === '/login' || req.originalUrl === '/' || req.originalUrl === '/products' || req.originalUrl === '/notify/colis') {
        return next();
    }
    if (req.get('authorization') === 'lpdw-2016') {
@@ -90,6 +91,7 @@ app.use('/users', users);
 app.use('/signup', signup);
 app.use('/login', login);
 app.use('/logout', logout);
+app.use('/notify', notify);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
