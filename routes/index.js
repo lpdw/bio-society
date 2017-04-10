@@ -121,6 +121,7 @@ router.post('/panier', function(req, res, next) {
 		
 		// On envoie la commande au producteur.
 		p.then(function(id_suivi) {
+			console.log(id_suivi);
 	      	req.session.panier.id_suivi = id_suivi;
 	      	let comfirmTransaction = Transaction.confirmTransaction(transaction_id, {status: 2});
 	      	comfirmTransaction.then(function(val) {
