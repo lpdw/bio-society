@@ -30,9 +30,9 @@ router.post('/colis', function(req, res, next) {
 
 	OrderService.findByQuery({id_suivi:req.body.tracking}).then(orders => {
 		if (orders.length > 1)
-			console.log("Some orders have the same tracking number !");
+			return res.status(403).send({err: "Some orders have the same tracking number."});
 		else if (orders.length == 0)
-			console.log("No order with tracking nomber '" + req.body.tracking + "' found !");
+			return res.status(403).send({err: "No order with tracking nomber '" + req.body.tracking + "' found."});
 		else {
 			let amount = orders[0].total;
 			let delivered = (req.body.delivered === 'true' || req.body.delivered === true);
@@ -45,10 +45,10 @@ router.post('/colis', function(req, res, next) {
 					confirmTransaction.then(function(val) {
 						return res.status(200).send({msg: 'The payment request for the producer was made successfully.'});
 					}).catch(function(error) {
-						return res.status(500).send({err: 'An error occurred, the transaction with the bank did not proceed correctly.', bankErr: error});
+						return res.status(502).send({err: 'An error occurred, the transaction with the bank did not proceed correctly.', bankErr: error});
 					});
 				}).catch(function(error) {
-					return res.status(500).send({err: 'An error occurred, the transaction with the bank did not proceed correctly.', bankErr: error});
+					return res.status(502).send({err: 'An error occurred, the transaction with the bank did not proceed correctly.', bankErr: error});
 				});
 			} else {
 				let jsonData = {"type":3,"payer":"010203040506","status":1,"amount":amount,"message":"Merci Jacquie et Michel !","beneficiary":orders[0].carte_bleue,"token":"hdzfdfchrofgbhcsxq"};
@@ -58,15 +58,15 @@ router.post('/colis', function(req, res, next) {
 					confirmTransaction.then(function(val) {
 						return res.status(200).send({msg: 'The refund request for the buyer was successfully completed.'});
 					}).catch(function(error) {
-						return res.status(500).send({err: 'An error occurred, the transaction with the bank did not proceed correctly.', bankErr: error});
+						return res.status(502).send({err: 'An error occurred, the transaction with the bank did not proceed correctly.', bankErr: error});
 					});
 				}).catch(function(error) {
-					return res.status(500).send({err: 'An error occurred, the transaction with the bank did not proceed correctly.', bankErr: error});
+					return res.status(502).send({err: 'An error occurred, the transaction with the bank did not proceed correctly.', bankErr: error});
 				});
 			}
 		}
 	}).catch(function(error){
-		console.log("No id_suivi found ! ", error);
+		return res.status(500).send({err: error});
 	});
 
 });
