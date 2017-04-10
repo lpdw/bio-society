@@ -32,7 +32,7 @@ router.post('/colis', function(req, res, next) {
 	if (delivered) {
 		let transaction = Transaction.doTransaction({transaction_id:67});
 		transaction.then(function(transaction_id) {
-			let confirmTransaction = Transaction.confirmTransaction(transaction_id, {statut: 2});
+			let confirmTransaction = Transaction.confirmTransaction(transaction_id, {status: 2});
 			confirmTransaction.then(function(val) {
 				return res.status(200).send({msg: 'The payment request for the producer was made successfully.'});
 			}).catch(function(error) {
@@ -44,7 +44,7 @@ router.post('/colis', function(req, res, next) {
 	} else {
 		let transaction = Transaction.doTransaction({transaction_id:67});
 		transaction.then(function(transaction_id) {
-			let confirmTransaction = Transaction.confirmTransaction(transaction_id, {statut: 2});
+			let confirmTransaction = Transaction.confirmTransaction(transaction_id, {status: 2});
 			confirmTransaction.then(function(val) {
 				return res.status(200).send({msg: 'The refund request for the buyer was successfully completed.'});
 			}).catch(function(error) {
@@ -74,7 +74,7 @@ router.post('/test', function(req, res, next) {
 
 	console.log(req.body);
 
-	return res.status(200).send({statut:1, transaction_id:67});
+	return res.status(200).send({status:1, transaction_id:67});
 });
 
 module.exports = router;
