@@ -129,6 +129,7 @@ router.post('/panier', function(req, res, next) {
 
 		// On envoie la commande au producteur.
 		p.then(function(id_suivi) {
+			id_suivi = "FR" + Math.random().toString(36).substr(2, 15);
 			console.log(id_suivi);
 	      	req.session.panier.id_suivi = id_suivi;
 			OrderService.updateById(req.session.panier.id_commande, {id_suivi : id_suivi});
