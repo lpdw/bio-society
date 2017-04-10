@@ -89,6 +89,7 @@ router.post('/test', function(req, res, next) {
 	console.log(req.body);
 
 	return res.status(200).send({status:1, transaction_id:67});
+	//return res.status(403).send({err: "No money !"});
 });
 
 module.exports = router;

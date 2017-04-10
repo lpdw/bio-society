@@ -103,31 +103,30 @@ router.post('/buy', function (req,res,next) {
 //Envoie de données vers la banque
 router.post('/panier', function(req, res, next) {
 
-	let p = new Promise((resolve, reject) => {
-		request({
-		    url: `https://senorpaparobot.herokuapp.com/command`,
-		    method: "POST",
-		    json: true,
-		    headers: {
-		        "content-type": "application/json",
-		        "authorization": "lpdw-2016"
-		    },
-		    body: req.session.panier
-		}, (error, response, body) => {
-			if (error) {
-				return reject(error)
-			}
-			return resolve(response.body);
-		})
-	});
-
   	let jsonData = {"type":2,"payer":req.body.cardNumber,"status":1,"amount":req.session.panier.total,"message":"Merci Jacquie et Michel !","beneficiary":"010203040506","token":req.body.token};
 
 	let transaction = Transaction.doTransaction(jsonData);
+	// Succès, l'argent est bloqué sur le compte de l'acheteur.
 	transaction.then(function(transaction_id) {
-		// Succès, l'argent est bloqué sur le compte de l'acheteur.
-
 		// On envoie la commande au producteur.
+		let p = new Promise((resolve, reject) => {
+			request({
+				url: `https://senorpaparobot.herokuapp.com/command`,
+				method: "POST",
+				json: true,
+				headers: {
+					"content-type": "application/json",
+					"authorization": "lpdw-2016"
+				},
+				body: req.session.panier
+			}, (error, response, body) => {
+				if (error) {
+					return reject(error)
+				}
+				return resolve(response.body);
+			})
+		});
+		// La commande est passée auprès du producteur.
 		p.then(function(id_suivi) {
 			id_suivi = "FR" + Math.random().toString(36).substr(2, 15);
 			console.log(id_suivi);
@@ -145,17 +144,17 @@ router.post('/panier', function(req, res, next) {
 	    // Le producteur n'a pas pu honoré sa commande.
 	    }).catch(function() {
 	    	let comfirmTransaction = Transaction.confirmTransaction(transaction_id, {status: 0});
+	        // Succès, l'argent a bien été rendu à l'acheteur.
 	        comfirmTransaction.then(function(val) {
-	        	// Succès, l'argent a bien été rendu à l'acheteur.
 	        	res.send("Félicitation, l'argent vous a bien été rendu");
+	      	// La commande n'est pas passée et le remboursement de l'acheteur a échoué.
 	      	}).catch(function(err) {
-	      		// La commande n'est pas passée et le remboursement de l'acheteur a échoué.
 	      		res.send("Attention, votre commande n'est pas passée et le remboursement de l'acheteur n'a pas pu aboutir !");
 	      	});
 	        console.log("promesse rompue");
 	    });
+	   // L'acheteur n'a pas assez d'argent.
 	}).catch(function(err) {
-		// L'acheteur n'a pas assez d'argent.
 		res.send("Transaction annulée, fond insuffisant");
 	});
 
