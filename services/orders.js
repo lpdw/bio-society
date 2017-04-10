@@ -18,3 +18,7 @@ exports.create = (order) => {
 		})
 	;
 };
+
+exports.updateById = (id, dataToUpdate) => {
+    return db.Orders.update(dataToUpdate, { where: { id }, returning: true });
+};

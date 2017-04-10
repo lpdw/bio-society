@@ -15,11 +15,19 @@ const storage = process.env.DATABASE_STORAGE || 'database.sqlite';
 
 const sequelize = new Sequelize(DB_name, user, pwd, { dialect, protocol, port, host, storage, omitNull: true });
 
+
+const Users = sequelize.import(path.join(__dirname, 'users'));
+const Orders = sequelize.import(path.join(__dirname, 'orders'));
+
+
+Users.hasMany(Orders, {as: "User", foreignKey: "user"});
+Orders.belongsTo(Users, {as: "User", foreignKey: "user"});
+
 sequelize.sync()
    .then(() => {
        console.log('DB loaded');
    })
 ;
- 
-const Users = sequelize.import(path.join(__dirname, 'users'));
+
 exports.Users = Users;
+exports.Orders = Orders;

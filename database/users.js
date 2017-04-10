@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-    var Users = sequelize.define('Users', {
+    return sequelize.define('Users', {
         username: {
            type: DataTypes.STRING,
            validate: {notEmpty: {msg: "-> Missing username"}}
@@ -29,13 +29,5 @@ module.exports = (sequelize, DataTypes) => {
            type: DataTypes.INTEGER,
            validate: {notEmpty: {msg: "-> Missing phone number"}}
         }
-   },{
-		classMethods: {
-			associate: function(database) {
-				Users.hasMany(database.Orders)
-			}
-		}
-	});
-	
-	return Users;
+    });
 };
