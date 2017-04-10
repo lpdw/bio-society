@@ -12,6 +12,9 @@ module.exports = (sequelize, DataTypes) => {
         },
 		statut:{
 			type: DataTypes.STRING
-		}
+		},
+        id_suivi:{
+            type: DataTypes.STRING
+        }
 	});
 };

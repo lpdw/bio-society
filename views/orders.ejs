@@ -7,7 +7,17 @@
 	        <th>Date</th>
 	        <th>Statut</th>
 			<th>Total</th>
+			<th>N° de suivi</th>
 	        <th>Détails</th>
 	    </tr>
+		<% for(var i=0; i<orders.length; i++) { %>
+	    <tr>
+	        <td><%= orders[i].id %></td>
+			<td><%= orders[i].createdAt %></td>
+	        <td><%= orders[i].statut %></td>
+	        <td><%= orders[i].total %></td>
+	        <td><%= orders[i].id_suivi %></td>
+	    </tr>
+	    <% } %>
 
 <% include partials/footer %>
