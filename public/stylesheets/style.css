@@ -17,6 +17,10 @@ a {
     z-index: 1;
 }
 
+.bgBody .form-horizontal {
+  width: 800px;
+}
+
 /** helpers **/
 
 .displayBlock {
