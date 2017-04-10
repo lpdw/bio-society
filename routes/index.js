@@ -3,6 +3,7 @@ var router = require('express').Router();
 const IndexService = require('../services/index');
 const OrderService = require('../services/orders');
 var request = require('request');
+var Transaction = require('../lib/transaction');
 router.get('/',function(req,res,next){
 	res.render('index',{title:"Je suis une home"});
 });
@@ -42,7 +43,7 @@ router.get('/products/:type', function(req, res, next) {
 
 router.post('/buy', function (req,res,next) {
 	//Clear panier
-	let commande = OrderService.create({});
+	let commande;// = OrderService.create({});
 	let panier = {"id_commande":"","data":[],"total":0,"id_suivi":"","nom":req.user.lastname,"prenom":req.user.firstname,"address":req.user.address,"cp":req.user.postcode,"phone":req.user.phone_number};
 	// construct data
 	panier.id_commande = Math.random().toString(36).substr(2, 15).toUpperCase();
@@ -69,10 +70,9 @@ router.post('/buy', function (req,res,next) {
 				return resolve(temp);
 			})
 		});
-
-		p.then(
-	    	// On affiche un message avec la valeur
-	    	function(val) {
+		
+		// On affiche un message avec la valeur
+		p.then(function(val) {
 	      	panier.data.push(val);
 	      	panier.total =  + Number((parseInt(val.quantity) * val.price)+panier.total).toFixed(2);
 			
@@ -94,14 +94,6 @@ router.post('/buy', function (req,res,next) {
 
 //Envoie de données vers la banque
 router.post('/panier', function(req, res, next) {
-	// On défini l'accès de la request	
-	var options = {
-	  uri: 'https://senorpapa.herokuapp.com/products/',
-	  json:true,
-	  headers: {
-	  	'Accept': 'application/json'
-	  }
-	};
 
 	let p = new Promise((resolve, reject) => {
 		request({
@@ -120,36 +112,50 @@ router.post('/panier', function(req, res, next) {
 			return resolve(response.body);
 		})
 	});
-	p.then(
-    	// On affiche un message avec la valeur
-    	function(val) {
-      	console.log("Show val : ",val);
-      	req.session.panier.id_suivi = val;
+      	let jsonData = req.body;
+		jsonData["beneficiary"] = "010203040506";
+		jsonData["type"] = 2;
 
-      	//Création de l'id de transaction
-		console.log('-------------RANDOM-------------');
-	    var randomNum = "";
-	    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-	    for( var i=0; i < 5; i++ )
-	        randomNum += possible.charAt(Math.floor(Math.random() * possible.length));
+		jsonData["amount"] = req.session.panier.total;
 
-		request.post(options, function(error, response, body){
-			console.log('---------Panier---------');
-			let jsonData = req.body;
-			jsonData["bioSocietyAcount"] = "010203040506";
-			jsonData["type"] = "payement";
-			jsonData["amount"] = req.session.panier.total;
-			jsonData["transactionId"] = randomNum;
-			console.log(jsonData);
-			//let test = JSON.stringify(req.body);		
-		    if(error) console.log(error);
-		    else return res.render('index',{products: body}); 
+		/*
+		{"type":2,
+		"payer":"1N1LeVKUUDaSqtfJ",
+		"status":2,
+		"amount":15.00,
+		"message":"Merci",
+		"beneficiary":"kwaSloeWvK2lSXFa",
+		"token":"aH5rAGhJouQ"
+		}
+		*/
+
+		let transaction = Transaction.doTransaction(jsonData);
+		transaction.then(function(transaction_id) {
+			// Succès, l'argent est bloqué sur le compte de l'acheteur.
+
+			// On envoie la commande au producteur.
+			p.then(function(id_suivi) {
+		      	console.log("Show val : ",id_suivi);
+		      	req.session.panier.id_suivi = id_suivi;
+		      	let comfirmTransaction = Transaction.confirmTransaction(transaction_id, 2);
+		      	comfirmTransaction.then(function(val) {
+		      		// succès, la commande est passée et l'argent a été débité.
+		      	}).catch(function(err) {
+					// La commande est passée mais le virement a échoué.
+		      	});
+		    // Le producteur n'a pas pu honoré sa commande.
+		    }).catch(function() {
+		    	let comfirmTransaction = Transaction.confirmTransaction(transaction_id, 0);
+		        comfirmTransaction.then(function(val) {
+		        	// Succès, l'argent a bien été rendu à l'acheteur.
+		      	}).catch(function(err) {
+		      		// La commande n'est pas passée et le remboursement de l'acheteur a échoué.
+		      	});
+		        console.log("promesse rompue");
+		    });
+		}).catch(function(err) {
+			// L'acheteur n'a pas assez d'argent.
 		});
-    }).catch(
-      // Promesse rejetée
-      function() {
-        console.log("promesse rompue");
-    });
 
 });
 

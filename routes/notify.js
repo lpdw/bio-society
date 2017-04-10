@@ -1,7 +1,7 @@
 'use strict'
 const express = require('express');
 const router = express.Router();
-var doTransaction = require('../lib/transaction');
+var Transaction = require('../lib/transaction');
 
 router.post('/colis', function(req, res, next) {
 
@@ -30,9 +30,9 @@ router.post('/colis', function(req, res, next) {
 	let delivered = (req.body.delivered === 'true' || req.body.delivered === true);
 
 	if (delivered) {
-		let transaction = doTransaction('http://localhost:3000/notify/test', {test: "test"});
-		transaction.then(function(val) {
-			let confirmTransaction = doTransaction('http://localhost:3000/notify/test', {transactionId:val.transactionId, status:true});
+		let transaction = Transaction.doTransaction({test: "test"});
+		transaction.then(function(transaction_id) {
+			let confirmTransaction = Transaction.confirmTransaction(transaction_id, 2);
 			confirmTransaction.then(function(val) {
 				return res.status(200).send({msg: 'The payment request for the producer was made successfully.'});
 			}).catch(function(error) {
@@ -43,9 +43,9 @@ router.post('/colis', function(req, res, next) {
 		});
 		return res.status(500).send({err: 'An error has occurred. Please contact an administrator of BioSociety.'});
 	} else {
-		let transaction = doTransaction('http://localhost:3000/notify/test', {test: "test"});
+		let transaction = Transaction.doTransaction({test: "test"});
 		transaction.then(function(val) {
-			let confirmTransaction = doTransaction('http://localhost:3000/notify/test', {transactionId:val.transactionId, status:true});
+			let confirmTransaction = Transaction.confirmTransaction(transaction_id, 2);
 			confirmTransaction.then(function(val) {
 				return res.status(200).send({msg: 'The refund request for the buyer was successfully completed.'});
 			}).catch(function(error) {
@@ -64,7 +64,9 @@ router.post('/test', function(req, res, next) {
 		return res.status(406).send({err: 'Not valid type for asked resource'});
 	}
 
-	return res.status(200).send({msg: 'Ok ça passe !'});
+	console.log(req.body);
+
+	return res.status(200).send({"statut":1,"transaction_id":67});
 });
 
 module.exports = router;
